@@ -73,13 +73,16 @@
 
 - (void)addMovie
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"New Movie" message:@"Add a movie" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add", nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"New Favorite Movie" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add", nil];
     [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
     [alert show];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    if (buttonIndex == 0 || [[[alertView textFieldAtIndex:0] text] isEqualToString:@""]) {
+        return;
+    }
     [self insertNewObject:[[alertView textFieldAtIndex:0] text]];
 }
 
