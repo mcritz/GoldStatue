@@ -57,8 +57,9 @@
 {
     NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
     NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
-    NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
+    UNX_Movie *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
     
+    [newManagedObject setValue:@(1) forKey:@"rank"];
     [newManagedObject setValue:movieTitle forKey:@"title"];
     
     // Save the context.
@@ -128,6 +129,8 @@
     }   
 }
 
+
+// TODO: this
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // The table view should not be re-orderable.
