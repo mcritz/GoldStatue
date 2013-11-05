@@ -93,11 +93,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
-    NSUInteger rows = [sectionInfo numberOfObjects];
-    if (rows == 0) {
-        rows = 4;
-    }
-    return rows;
+    return [sectionInfo numberOfObjects];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -169,7 +165,7 @@
     [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"rank" ascending:YES];
     NSArray *sortDescriptors = @[sortDescriptor];
     
     [fetchRequest setSortDescriptors:sortDescriptors];
@@ -243,19 +239,8 @@
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-//    NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    if ([self.fetchedResultsController.fetchedObjects count] > 1) {
-        UNX_Movie *movie = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        cell.textLabel.text = [movie valueForKey:@"title"];
-    } else {
-        NSArray *listOfMovies = @[
-                                  @"Back to the Future",
-                                  @"The Godfather",
-                                  @"Star Wars",
-                                  @"Seven Samurai"
-                                  ];
-        cell.textLabel.text = listOfMovies[indexPath.row];
-    }
+    UNX_Movie *movie = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    cell.textLabel.text = [movie valueForKey:@"title"];
 }
 
 @end
