@@ -7,12 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UNX_Movie.h"
 
 @class UNX_DetailViewController;
 
 #import <CoreData/CoreData.h>
 
-@interface UNX_MasterViewController : UITableViewController <NSFetchedResultsControllerDelegate>
+@interface UNX_MasterViewController : UITableViewController <NSFetchedResultsControllerDelegate, UIAlertViewDelegate>
 
 @property (strong, nonatomic) UNX_DetailViewController *detailViewController;
 

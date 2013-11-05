@@ -12,9 +12,20 @@
 
 @interface UNX_MasterViewController ()
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+- (void)insertNewObject:(NSString *)movieTitle;
 @end
 
 @implementation UNX_MasterViewController
+
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
+    if (
+        action == @selector(addMovie)
+        ) {
+        return YES;
+    }
+    return NO;
+}
+
 
 - (void)awakeFromNib
 {
@@ -31,7 +42,7 @@
 	// Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addMovie)];
     self.navigationItem.rightBarButtonItem = addButton;
     self.detailViewController = (UNX_DetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
 }
@@ -42,15 +53,13 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)insertNewObject:(id)sender
+- (void)insertNewObject:(NSString *)movieTitle
 {
     NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
     NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
     NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
     
-    // If appropriate, configure the new managed object.
-    // Normally you should use accessor methods, but using KVC here avoids the need to add a custom class to the template.
-    [newManagedObject setValue:[[NSDate date] description] forKey:@"title"];
+    [newManagedObject setValue:movieTitle forKey:@"title"];
     
     // Save the context.
     NSError *error = nil;
@@ -60,6 +69,18 @@
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
+}
+
+- (void)addMovie
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"New Movie" message:@"Add a movie" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add", nil];
+    [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [self insertNewObject:[[alertView textFieldAtIndex:0] text]];
 }
 
 #pragma mark - Table View
@@ -72,7 +93,11 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
-    return [sectionInfo numberOfObjects];
+    NSUInteger rows = [sectionInfo numberOfObjects];
+    if (rows == 0) {
+        rows = 4;
+    }
+    return rows;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -216,20 +241,21 @@
     [self.tableView endUpdates];
 }
 
-/*
-// Implementing the above methods to update the table view in response to individual changes may have performance implications if a large number of changes are made simultaneously. If this proves to be an issue, you can instead just implement controllerDidChangeContent: which notifies the delegate that all section and object changes have been processed. 
- 
- - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-{
-    // In the simplest, most efficient, case, reload the table view.
-    [self.tableView reloadData];
-}
- */
-
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [object valueForKey:@"title"];
+//    NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    if ([self.fetchedResultsController.fetchedObjects count] > 1) {
+        UNX_Movie *movie = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        cell.textLabel.text = [movie valueForKey:@"title"];
+    } else {
+        NSArray *listOfMovies = @[
+                                  @"Back to the Future",
+                                  @"The Godfather",
+                                  @"Star Wars",
+                                  @"Seven Samurai"
+                                  ];
+        cell.textLabel.text = listOfMovies[indexPath.row];
+    }
 }
 
 @end
