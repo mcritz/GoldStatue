@@ -11,5 +11,6 @@
 @interface UNX_Movie : NSManagedObject
 
 @property (nonatomic) NSString *title;
+@property int rank;
 
 @end

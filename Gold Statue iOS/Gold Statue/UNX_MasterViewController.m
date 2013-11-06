@@ -13,9 +13,12 @@
 @interface UNX_MasterViewController ()
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 - (void)insertNewObject:(NSString *)movieTitle;
+@property BOOL isUpdatingList;
 @end
 
 @implementation UNX_MasterViewController
+
+@synthesize isUpdatingList;
 
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
     if (
@@ -59,7 +62,7 @@
     NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
     UNX_Movie *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
     
-    [newManagedObject setValue:@(1) forKey:@"rank"];
+    [newManagedObject setValue:@([self.tableView numberOfRowsInSection:0] + 1) forKey:@"rank"];
     [newManagedObject setValue:movieTitle forKey:@"title"];
     
     // Save the context.
@@ -84,6 +87,8 @@
     if (buttonIndex == 0 || [[[alertView textFieldAtIndex:0] text] isEqualToString:@""]) {
         return;
     }
+    self.isUpdatingList = YES;
+    [self updateMovieRanks];
     [self insertNewObject:[[alertView textFieldAtIndex:0] text]];
 }
 
@@ -134,7 +139,7 @@
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // The table view should not be re-orderable.
-    return NO;
+    return YES;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -236,6 +241,18 @@
             [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
     }
+}
+
+- (void)updateMovieRanks
+{
+    if (isUpdatingList) {
+        for (int i = 0; i < [self.fetchedResultsController.fetchedObjects count]; i++) {
+            UNX_Movie *movieToUpdate = [self.fetchedResultsController.fetchedObjects objectAtIndex:i];
+            [movieToUpdate setValue:@(i) forKey:@"rank"];
+            NSLog(@"Movie rank: %@ has title: %@", [movieToUpdate valueForKey:@"rank"], [movieToUpdate valueForKey:@"title"]);
+        }
+    }
+    isUpdatingList = NO;
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller

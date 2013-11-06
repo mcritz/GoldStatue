@@ -10,7 +10,7 @@
 
 @implementation UNX_Movie
 
-@synthesize title;
+@synthesize rank, title;
 
 - (UNX_Movie *)init
 {
