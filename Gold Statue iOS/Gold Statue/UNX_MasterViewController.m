@@ -87,8 +87,8 @@
     if (buttonIndex == 0 || [[[alertView textFieldAtIndex:0] text] isEqualToString:@""]) {
         return;
     }
-    self.isUpdatingList = YES;
-    [self updateMovieRanks];
+//    self.isUpdatingList = YES;
+//    [self updateMovieRank];
     [self insertNewObject:[[alertView textFieldAtIndex:0] text]];
 }
 
@@ -114,7 +114,6 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Return NO if you do not want the specified item to be editable.
     return YES;
 }
 
@@ -123,6 +122,7 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
         [context deleteObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
+        // TODO: update ranks for delted object
         
         NSError *error = nil;
         if (![context save:&error]) {
@@ -131,14 +131,12 @@
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         }
-    }   
+    }
 }
 
 
-// TODO: this
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // The table view should not be re-orderable.
     return YES;
 }
 
@@ -206,6 +204,7 @@
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
            atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
 {
+    NSLog(@"didChangeSection");
     switch(type) {
         case NSFetchedResultsChangeInsert:
             [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
@@ -213,6 +212,11 @@
             
         case NSFetchedResultsChangeDelete:
             [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        case NSFetchedResultsChangeMove:
+            break;
+        default:
+            NSLog(@"WARNING: didChangeSection had no effect");
             break;
     }
 }
@@ -241,16 +245,16 @@
             [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
     }
+    NSLog(@"didChangeObject %@", anObject);
 }
 
-- (void)updateMovieRanks
+- (void)updateMovieRank:(NSIndexPath *)newPath
 {
     if (isUpdatingList) {
-        for (int i = 0; i < [self.fetchedResultsController.fetchedObjects count]; i++) {
-            UNX_Movie *movieToUpdate = [self.fetchedResultsController.fetchedObjects objectAtIndex:i];
-            [movieToUpdate setValue:@(i) forKey:@"rank"];
-            NSLog(@"Movie rank: %@ has title: %@", [movieToUpdate valueForKey:@"rank"], [movieToUpdate valueForKey:@"title"]);
-        }
+        // TODO: type-test this. COULD CRASH!!
+        UNX_Movie *movieToUpdate = [self.fetchedResultsController.fetchedObjects objectAtIndex:newPath.row];
+        [movieToUpdate setValue:@(newPath.row) forKey:@"rank"];
+        NSLog(@"Movie:%@ set to %d", movieToUpdate.title, newPath.row);
     }
     isUpdatingList = NO;
 }
@@ -265,5 +269,28 @@
     UNX_Movie *movie = [self.fetchedResultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = [movie valueForKey:@"title"];
 }
+
+#pragma mark - Table View Editing
+// Override setEditing to update on dones
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    [super setEditing:editing animated:animated];
+    if (editing == NO) {
+    }
+}
+
+ // Override to support rearranging the table view.
+ - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+ {
+     NSMutableArray *movies = [[self.fetchedResultsController fetchedObjects] mutableCopy];
+     NSManagedObject *movedMovie = [self.fetchedResultsController objectAtIndexPath:fromIndexPath];
+     [movies removeObject:movedMovie];
+     [movies insertObject:movedMovie atIndex:toIndexPath.row];
+     int i = 0;
+     for (NSManagedObject *managedMovie in movies) {
+         [managedMovie setValue:@(i++) forKey:@"rank"];
+     }
+     [self.managedObjectContext save:nil];
+ }
+
 
 @end
