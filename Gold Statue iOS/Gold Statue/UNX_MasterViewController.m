@@ -120,14 +120,14 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
+//        [self updateMovieRanksFromPath:indexPath toPath:nil];
         NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
         [context deleteObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
-        // TODO: update ranks for delted object
         
         NSError *error = nil;
         if (![context save:&error]) {
              // Replace this implementation with code to handle the error appropriately.
-             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
+             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         }
@@ -245,18 +245,31 @@
             [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
     }
-    NSLog(@"didChangeObject %@", anObject);
+//    NSLog(@"didChangeObject %@", anObject);
 }
 
-- (void)updateMovieRank:(NSIndexPath *)newPath
+- (void)updateMovieRanksFromPath:(NSIndexPath *)oldPath toPath:(NSIndexPath *)newPath
 {
-    if (isUpdatingList) {
-        // TODO: type-test this. COULD CRASH!!
-        UNX_Movie *movieToUpdate = [self.fetchedResultsController.fetchedObjects objectAtIndex:newPath.row];
-        [movieToUpdate setValue:@(newPath.row) forKey:@"rank"];
-        NSLog(@"Movie:%@ set to %d", movieToUpdate.title, newPath.row);
+    // Need an array to play with
+    NSMutableArray *movieArray = [self.fetchedResultsController.fetchedObjects mutableCopy];
+    
+    UNX_Movie *movieToUpdate = [movieArray objectAtIndex:oldPath.row];
+    [movieArray removeObject:movieToUpdate];
+    
+    if (newPath) {
+        [movieArray insertObject:movieToUpdate atIndex:newPath.row];
+        UITableViewCell *cellToUpdate = [self.tableView cellForRowAtIndexPath:newPath];
+        [self configureCell:cellToUpdate atIndexPath:newPath];
     }
-    isUpdatingList = NO;
+    
+    // iterate over all the managedobjects and assign their new ranks
+    int i = 1; // 1 indexed because my favorite movie is #1!
+    for (NSManagedObject *managedMovie in movieArray) {
+        [managedMovie setValue:@(i++) forKey:@"rank"];
+    }
+    
+    // commit MoM to disk
+//    [self.managedObjectContext save:nil];
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
@@ -271,25 +284,11 @@
 }
 
 #pragma mark - Table View Editing
-// Override setEditing to update on dones
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
-    [super setEditing:editing animated:animated];
-    if (editing == NO) {
-    }
-}
 
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+// Override to support rearranging the table view.
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
  {
-     NSMutableArray *movies = [[self.fetchedResultsController fetchedObjects] mutableCopy];
-     NSManagedObject *movedMovie = [self.fetchedResultsController objectAtIndexPath:fromIndexPath];
-     [movies removeObject:movedMovie];
-     [movies insertObject:movedMovie atIndex:toIndexPath.row];
-     int i = 0;
-     for (NSManagedObject *managedMovie in movies) {
-         [managedMovie setValue:@(i++) forKey:@"rank"];
-     }
-     [self.managedObjectContext save:nil];
+     [self updateMovieRanksFromPath:fromIndexPath toPath:toIndexPath];
  }
 
 

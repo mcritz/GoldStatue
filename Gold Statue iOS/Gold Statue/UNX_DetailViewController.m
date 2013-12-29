@@ -37,6 +37,7 @@
 
     if (self.detailItem) {
         self.detailDescriptionLabel.text = [self.detailItem valueForKey:@"title"];
+        self.rankLabel.text = [[self.detailItem valueForKey:@"rank"] stringValue];
     }
 }
 
