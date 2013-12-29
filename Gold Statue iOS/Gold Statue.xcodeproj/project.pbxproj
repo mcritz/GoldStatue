@@ -27,6 +27,7 @@
 		0F66FEF0182753E9007B6CEB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0F66FEEE182753E9007B6CEB /* InfoPlist.strings */; };
 		0F66FEF2182753E9007B6CEB /* Gold_StatueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F66FEF1182753E9007B6CEB /* Gold_StatueTests.m */; };
 		0F9EF57418289F19007C6087 /* UNX_Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F9EF57318289F19007C6087 /* UNX_Movie.m */; };
+		0FD6D07D18709D9800038D7E /* UNX_RankedTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD6D07C18709D9800038D7E /* UNX_RankedTableCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,8 @@
 		0F66FEF1182753E9007B6CEB /* Gold_StatueTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Gold_StatueTests.m; sourceTree = "<group>"; };
 		0F9EF57218289F19007C6087 /* UNX_Movie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UNX_Movie.h; path = models/UNX_Movie.h; sourceTree = "<group>"; };
 		0F9EF57318289F19007C6087 /* UNX_Movie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UNX_Movie.m; path = models/UNX_Movie.m; sourceTree = "<group>"; };
+		0FD6D07B18709D9800038D7E /* UNX_RankedTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UNX_RankedTableCell.h; sourceTree = "<group>"; };
+		0FD6D07C18709D9800038D7E /* UNX_RankedTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UNX_RankedTableCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +134,8 @@
 				0F66FECB182753E9007B6CEB /* UNX_AppDelegate.h */,
 				0F66FECC182753E9007B6CEB /* UNX_AppDelegate.m */,
 				0F66FECE182753E9007B6CEB /* Main_iPhone.storyboard */,
+				0FD6D07B18709D9800038D7E /* UNX_RankedTableCell.h */,
+				0FD6D07C18709D9800038D7E /* UNX_RankedTableCell.m */,
 				0F66FED1182753E9007B6CEB /* Main_iPad.storyboard */,
 				0F66FED7182753E9007B6CEB /* UNX_MasterViewController.h */,
 				0F66FED8182753E9007B6CEB /* UNX_MasterViewController.m */,
@@ -276,6 +281,7 @@
 				0F66FED6182753E9007B6CEB /* Gold_Statue.xcdatamodeld in Sources */,
 				0F66FECD182753E9007B6CEB /* UNX_AppDelegate.m in Sources */,
 				0F9EF57418289F19007C6087 /* UNX_Movie.m in Sources */,
+				0FD6D07D18709D9800038D7E /* UNX_RankedTableCell.m in Sources */,
 				0F66FEDC182753E9007B6CEB /* UNX_DetailViewController.m in Sources */,
 				0F66FED9182753E9007B6CEB /* UNX_MasterViewController.m in Sources */,
 				0F66FEC9182753E9007B6CEB /* main.m in Sources */,

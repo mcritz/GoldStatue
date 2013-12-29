@@ -7,11 +7,11 @@
 //
 
 #import "UNX_MasterViewController.h"
-
 #import "UNX_DetailViewController.h"
+#import "UNX_RankedTableCell.h"
 
 @interface UNX_MasterViewController ()
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+- (void)configureCell:(UNX_RankedTableCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 - (void)insertNewObject:(NSString *)movieTitle;
 @property BOOL isUpdatingList;
 @end
@@ -107,7 +107,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    UNX_RankedTableCell *cell = [tableView dequeueReusableCellWithIdentifier:@"RankedCell" forIndexPath:indexPath];
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
@@ -237,7 +237,7 @@
             break;
             
         case NSFetchedResultsChangeUpdate:
-            [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            [self configureCell:(UNX_RankedTableCell *)[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
             break;
             
         case NSFetchedResultsChangeMove:
@@ -257,7 +257,7 @@
     
     if (newPath) {
         [movieArray insertObject:movieToUpdate atIndex:newPath.row];
-        UITableViewCell *cellToUpdate = [self.tableView cellForRowAtIndexPath:newPath];
+        UNX_RankedTableCell *cellToUpdate = (UNX_RankedTableCell *)[self.tableView cellForRowAtIndexPath:newPath];
         [self configureCell:cellToUpdate atIndexPath:newPath];
     } else {
         // No newPath: delete movie from MoM, update the table
@@ -277,10 +277,11 @@
     [self.tableView endUpdates];
 }
 
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+- (void)configureCell:(UNX_RankedTableCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     UNX_Movie *movie = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [movie valueForKey:@"title"];
+    cell.titleLabel.text = [movie valueForKey:@"title"];
+    cell.rankLabel.text = [[movie valueForKey:@"rank"] stringValue];
 }
 
 #pragma mark - Table View Editing
