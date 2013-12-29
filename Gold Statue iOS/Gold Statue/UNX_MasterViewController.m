@@ -120,17 +120,17 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-//        [self updateMovieRanksFromPath:indexPath toPath:nil];
-        NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-        [context deleteObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
+        [self updateMovieRanksFromPath:indexPath toPath:nil];
+//        NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+//        [context deleteObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
         
-        NSError *error = nil;
-        if (![context save:&error]) {
-             // Replace this implementation with code to handle the error appropriately.
-             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        }
+//        NSError *error = nil;
+//        if (![context save:&error]) {
+//             // Replace this implementation with code to handle the error appropriately.
+//             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+//            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+//            abort();
+//        }
     }
 }
 
@@ -245,7 +245,6 @@
             [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
     }
-//    NSLog(@"didChangeObject %@", anObject);
 }
 
 - (void)updateMovieRanksFromPath:(NSIndexPath *)oldPath toPath:(NSIndexPath *)newPath
@@ -260,6 +259,10 @@
         [movieArray insertObject:movieToUpdate atIndex:newPath.row];
         UITableViewCell *cellToUpdate = [self.tableView cellForRowAtIndexPath:newPath];
         [self configureCell:cellToUpdate atIndexPath:newPath];
+    } else {
+        // No newPath: delete movie from MoM, update the table
+        NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+        [context deleteObject:[self.fetchedResultsController objectAtIndexPath:oldPath]];
     }
     
     // iterate over all the managedobjects and assign their new ranks
@@ -267,9 +270,6 @@
     for (NSManagedObject *managedMovie in movieArray) {
         [managedMovie setValue:@(i++) forKey:@"rank"];
     }
-    
-    // commit MoM to disk
-//    [self.managedObjectContext save:nil];
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
