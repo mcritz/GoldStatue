@@ -11,5 +11,7 @@
 @interface UNX_RankedTableCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *rankLabel;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UITextField *titleInput;
+- (IBAction)titleEntered:(id)sender;
 
 @end
