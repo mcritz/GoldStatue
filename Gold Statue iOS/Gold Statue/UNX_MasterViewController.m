@@ -207,6 +207,8 @@
             break;
         default:
             NSLog(@"WARNING: didChangeSection had no effect");
+#pragma TODO: NOT THIS!
+            abort();
             break;
     }
 }
@@ -234,7 +236,13 @@
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
             [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
+        default:
+            NSLog(@"WARNING: didChangeObject() had no effect!");
+#pragma TODO: NOT THIS!
+            abort();
+            break;
     }
+    [self.managedObjectContext save:nil];
 }
 
 - (void)updateMovieRanksFromPath:(NSIndexPath *)oldPath toPath:(NSIndexPath *)newPath
