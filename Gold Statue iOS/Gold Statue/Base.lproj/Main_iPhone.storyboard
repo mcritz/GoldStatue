@@ -85,9 +85,10 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="textColor" red="0.89094424250000004" green="0.47211131449999999" blue="0.028772857039999999" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                            <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" keyboardAppearance="alert" returnKeyType="done"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" keyboardAppearance="alert" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                             <connections>
                                                 <action selector="titleEntered:" destination="Xyn-nj-U9R" eventType="editingDidEnd" id="Jaw-ti-eVJ"/>
+                                                <outlet property="delegate" destination="Xyn-nj-U9R" id="Pf5-ys-jDW"/>
                                             </connections>
                                         </textField>
                                     </subviews>

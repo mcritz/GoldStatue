@@ -21,6 +21,7 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        self.titleInput.delegate = self;
     }
     return self;
 }
@@ -42,19 +43,43 @@
         [self.rankLabel setAlpha:1.0];
         [self.titleLabel setHidden:NO];
         if (self.userIsEditing) {
-            [self titleEntered:self.titleInput];
+//            [self titleEntered:self.titleInput];
             self.userIsEditing = NO;
         }
     }
 }
 
 - (IBAction)titleEntered:(id)sender {
-    [sender resignFirstResponder];
     NSString *titleLabelText = self.titleLabel.text;
     if (self.titleInput.text.length > 0) {
         titleLabelText = self.titleInput.text;
     }
     self.titleLabel.text = titleLabelText;
-//    NSLog(@"Title: %@", titleLabelText);
+    NSLog(@"Title: %@", titleLabelText);
 }
+
+#pragma mark - TextView protocol
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self setSelected:NO animated:YES];
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (void)textWillChange:(id<UITextInput>)textInput {
+    return;
+}
+
+- (void)textDidChange:(id<UITextInput>)textInput {
+    return;
+}
+
+- (void)selectionWillChange:(id<UITextInput>)textInput {
+    return;
+}
+
+- (void)selectionDidChange:(id<UITextInput>)textInput {
+    return;
+}
+
 @end
