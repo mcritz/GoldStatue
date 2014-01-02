@@ -10,12 +10,30 @@
 
 @interface UNX_RankedTableCell()
 
-@property BOOL userIsEditing;
+@property (weak, nonatomic) IBOutlet UILabel *rankLabel;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UITextField *titleInput;
+- (IBAction)titleEntered:(id)sender;
 
 @end
 
 @implementation UNX_RankedTableCell
-@synthesize userIsEditing, rankLabel, titleLabel, titleInput;
+@synthesize movie = _movie;
+@synthesize rankLabel, titleLabel, titleInput;
+
+// Override Setter
+- (void)setMovie:(UNX_Movie *)movie {
+// TODO: This
+//    if (!_movie) {
+//        _movie = [[UNX_Movie alloc] init];
+//        _movie.title = @"Movie Title";
+//    }
+    _movie = movie;
+    self.titleInput.text = movie.title;
+    self.titleLabel.text = movie.title;
+    NSString *rankString = [[movie valueForKey:@"rank"] stringValue];
+    self.rankLabel.text = rankString;
+}
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -36,26 +54,26 @@
         [self.titleInput setSelected:YES];
         [self.rankLabel setAlpha:0.5];
         [self.titleLabel setHidden:YES];
-        self.userIsEditing = YES;
     } else {
         [self.titleInput setHidden:YES];
         [self.titleInput setSelected:NO];
         [self.rankLabel setAlpha:1.0];
         [self.titleLabel setHidden:NO];
-        if (self.userIsEditing) {
-//            [self titleEntered:self.titleInput];
-            self.userIsEditing = NO;
-        }
     }
 }
 
 - (IBAction)titleEntered:(id)sender {
-    NSString *titleLabelText = self.titleLabel.text;
-    if (self.titleInput.text.length > 0) {
-        titleLabelText = self.titleInput.text;
+    if (self.movie && self.titleInput.text.length > 0) {
+        self.movie.title = self.titleInput.text;
+        self.titleLabel.text = self.movie.title;
+    } else {
+        NSString *titleLabelText = self.titleLabel.text;
+        if (self.titleInput.text.length > 0) {
+            titleLabelText = self.titleInput.text;
+        }
+        self.titleLabel.text = titleLabelText;
+        NSLog(@"Title: %@", titleLabelText);
     }
-    self.titleLabel.text = titleLabelText;
-    NSLog(@"Title: %@", titleLabelText);
 }
 
 #pragma mark - TextView protocol

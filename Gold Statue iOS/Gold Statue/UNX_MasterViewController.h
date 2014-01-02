@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "UNX_Movie.h"
+#import "UNX_RankedTableCell.h"
 
 @class UNX_DetailViewController;
 

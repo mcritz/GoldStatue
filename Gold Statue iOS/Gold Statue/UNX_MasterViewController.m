@@ -8,7 +8,6 @@
 
 #import "UNX_MasterViewController.h"
 #import "UNX_DetailViewController.h"
-#import "UNX_RankedTableCell.h"
 
 @interface UNX_MasterViewController ()
 - (void)configureCell:(UNX_RankedTableCell *)cell atIndexPath:(NSIndexPath *)indexPath;
@@ -278,17 +277,23 @@
 - (void)configureCell:(UNX_RankedTableCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     UNX_Movie *movie = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.titleLabel.text = [movie valueForKey:@"title"];
-    cell.rankLabel.text = [[movie valueForKey:@"rank"] stringValue];
+//    cell.titleLabel.text = [movie valueForKey:@"title"];
+//    cell.rankLabel.text = [[movie valueForKey:@"rank"] stringValue];
+    cell.movie = movie;
+}
+
+- (void)updateMovie:(UNX_Movie *)movie atIndexPath:(NSIndexPath *)indexPath {
+    UNX_Movie *oldMovie = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    oldMovie.rank = movie.rank;
+    oldMovie.title = movie.title;
 }
 
 #pragma mark - Table View Editing
 
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
-     [self updateMovieRanksFromPath:fromIndexPath toPath:toIndexPath];
- }
-
+{
+    [self updateMovieRanksFromPath:fromIndexPath toPath:toIndexPath];
+}
 
 @end

@@ -7,11 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UNX_Movie.h"
 
 @interface UNX_RankedTableCell : UITableViewCell <UITextFieldDelegate>
-@property (weak, nonatomic) IBOutlet UILabel *rankLabel;
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet UITextField *titleInput;
-- (IBAction)titleEntered:(id)sender;
+
+@property (strong, nonatomic)UNX_Movie *movie;
 
 @end

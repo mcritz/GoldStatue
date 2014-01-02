@@ -8,7 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
-@interface UNX_Movie : NSManagedObject
+//@protocol UNXMovieDelegate <NSObject>
+//
+//// @optional
+//- (void)updateMovieWithRank:(int)rank andTitle:(NSString *)title;
+//
+//@end
+
+@interface UNX_Movie : NSManagedObject {
+//    id <UNXMovieDelegate> delegate;
+}
 
 @property (nonatomic) NSString *title;
 @property int rank;
