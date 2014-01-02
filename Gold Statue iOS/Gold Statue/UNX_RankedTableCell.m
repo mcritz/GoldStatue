@@ -50,15 +50,15 @@
     [self.titleLabel setHighlightedTextColor:[UIColor whiteColor]];
     if (selected) {
         self.titleInput.text = self.titleLabel.text;
-        [self.titleInput setHidden:NO];
+//        [self.titleInput setHidden:NO];
         [self.titleInput setSelected:YES];
         [self.rankLabel setAlpha:0.5];
-        [self.titleLabel setHidden:YES];
+//        [self.titleLabel setHidden:YES];
     } else {
-        [self.titleInput setHidden:YES];
+//        [self.titleInput setHidden:YES];
         [self.titleInput setSelected:NO];
         [self.rankLabel setAlpha:1.0];
-        [self.titleLabel setHidden:NO];
+//        [self.titleLabel setHidden:NO];
     }
 }
 

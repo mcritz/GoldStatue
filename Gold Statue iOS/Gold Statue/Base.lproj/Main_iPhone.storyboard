@@ -65,14 +65,6 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.49999999999999961" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d2d-aI-Nlj">
-                                            <rect key="frame" x="65" y="0.0" width="222" height="43"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <color key="tintColor" red="0.89094424250000004" green="0.47211131449999999" blue="0.028772857039999999" alpha="1" colorSpace="calibratedRGB"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                            <color key="textColor" red="0.28690481185913086" green="0.36768516898155212" blue="0.45415621995925903" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I7L-TY-65c">
                                             <rect key="frame" x="15" y="0.0" width="42" height="43"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -83,8 +75,8 @@
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Movie title…" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9ET-MK-V7a">
                                             <rect key="frame" x="65" y="0.0" width="255" height="43"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <color key="textColor" red="0.89094424250000004" green="0.47211131449999999" blue="0.028772857039999999" alpha="1" colorSpace="calibratedRGB"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                            <color key="textColor" red="0.2869048119" green="0.36768516899999998" blue="0.45415622" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" keyboardAppearance="alert" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                             <connections>
                                                 <action selector="titleEntered:" destination="Xyn-nj-U9R" eventType="editingDidEnd" id="Jaw-ti-eVJ"/>
@@ -100,7 +92,6 @@
                                 <connections>
                                     <outlet property="rankLabel" destination="I7L-TY-65c" id="GcH-0E-O0A"/>
                                     <outlet property="titleInput" destination="9ET-MK-V7a" id="Yea-ZO-uZB"/>
-                                    <outlet property="titleLabel" destination="d2d-aI-Nlj" id="NgN-ga-ERr"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
