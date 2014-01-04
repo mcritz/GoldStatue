@@ -131,6 +131,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    UNX_RankedTableCell *cell = (UNX_RankedTableCell *)[tableView cellForRowAtIndexPath:indexPath];
+    cell.rowIsEditing = YES;
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
         self.detailViewController.detailItem = object;
@@ -280,6 +282,7 @@
 //    cell.titleLabel.text = [movie valueForKey:@"title"];
 //    cell.rankLabel.text = [[movie valueForKey:@"rank"] stringValue];
     cell.movie = movie;
+    cell.rowIsEditing = NO;
 }
 
 - (void)updateMovie:(UNX_Movie *)movie atIndexPath:(NSIndexPath *)indexPath {
@@ -295,5 +298,13 @@
 {
     [self updateMovieRanksFromPath:fromIndexPath toPath:toIndexPath];
 }
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animate {
+    [super setEditing:editing animated:animate];
+    for (int i = 0; i < self.fetchedResultsController.fetchedObjects.count; i++) {
+        <#statements#>
+    }
+}
+
 
 @end

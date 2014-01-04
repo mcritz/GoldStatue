@@ -14,12 +14,11 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UITextField *titleInput;
 - (IBAction)titleEntered:(id)sender;
-
 @end
 
 @implementation UNX_RankedTableCell
 @synthesize movie = _movie;
-@synthesize rankLabel, titleLabel, titleInput;
+@synthesize rankLabel, titleLabel, titleInput, rowIsEditing;
 
 // Override Setter
 - (void)setMovie:(UNX_Movie *)movie {
@@ -40,25 +39,28 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.titleInput.delegate = self;
+        self.rowIsEditing = NO;
     }
     return self;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-    [super setSelected:selected animated:animated];
-    [self.titleLabel setHighlightedTextColor:[UIColor whiteColor]];
-    if (selected) {
-        self.titleInput.text = self.titleLabel.text;
-//        [self.titleInput setHidden:NO];
-        [self.titleInput setSelected:YES];
-        [self.rankLabel setAlpha:0.5];
-//        [self.titleLabel setHidden:YES];
-    } else {
-//        [self.titleInput setHidden:YES];
-        [self.titleInput setSelected:NO];
-        [self.rankLabel setAlpha:1.0];
-//        [self.titleLabel setHidden:NO];
+    if (!self.rowIsEditing) {
+        [super setSelected:selected animated:animated];
+        [self.titleLabel setHighlightedTextColor:[UIColor whiteColor]];
+        if (selected) {
+            self.titleInput.text = self.titleLabel.text;
+    //        [self.titleInput setHidden:NO];
+            [self.titleInput setSelected:YES];
+            [self.rankLabel setAlpha:0.5];
+    //        [self.titleLabel setHidden:YES];
+        } else {
+    //        [self.titleInput setHidden:YES];
+            [self.titleInput setSelected:NO];
+            [self.rankLabel setAlpha:1.0];
+    //        [self.titleLabel setHidden:NO];
+        }
     }
 }
 

@@ -12,5 +12,6 @@
 @interface UNX_RankedTableCell : UITableViewCell <UITextFieldDelegate>
 
 @property (strong, nonatomic)UNX_Movie *movie;
+@property BOOL rowIsEditing;
 
 @end
